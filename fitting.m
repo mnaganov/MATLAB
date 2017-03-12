@@ -11,7 +11,7 @@ Gphase = data(:, 3).';
 fs = 44100;
 NP = 9;
 NZ = 9;
-Nfft = 2048;
+Nfft = 8192;
 
 % Must decide on a dc value.
 % Either use what is known to be true or pick something "maximally
