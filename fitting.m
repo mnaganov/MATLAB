@@ -1,5 +1,5 @@
-data = csvread('/Users/mikhail/Documents/MATLAB/linkwitz_2.csv', 1, 0);  % skip the header
-%data = csvread('/Users/mikhail/Documents/MATLAB/Phonitor-Med-30-1.2-FR.csv', 1, 0);  % skip the header
+%data = csvread('/Users/mikhail/Documents/MATLAB/linkwitz_2.csv', 1, 0);  % skip the header
+data = csvread('/Users/mikhail/Documents/MATLAB/Phonitor-Med-30-1.2-FR-Right-1_1.csv', 1, 0);  % skip the header
 f = data(:, 1).';
 fmin = f(1);
 fmax = f(end);
@@ -7,7 +7,7 @@ NG = length(f);
 Gdb_nonnorm = data(:, 2).';
 %Gdb = Gdb_nonnorm .+ (-max(Gdb_nonnorm));
 Gdb = Gdb_nonnorm .+ (-Gdb_nonnorm(1));
-Gphase = data(:, 4).';
+Gphase = data(:, 3).';
 fs = 44100;
 NP = 9;
 NZ = 9;
@@ -35,14 +35,6 @@ Gdbei = spline(fe,Gdbe); % say `help spline'
 fk = fs*[0:Nfft/2]/Nfft; % fft frequency grid (nonneg freqs)
 Gdbfk = ppval(Gdbei,fk); % Uniformly resampled amp-resp
 
-%figure(1);
-%semilogx(fk(2:end-1),Gdbfk(2:end-1),'-k'); grid('on'); 
-%xlim([fmin/2, fmax*2]);
-%hold('on'); semilogx(f,Gdb,'ok');
-%xlabel('Frequency (Hz)');   ylabel('Magnitude (dB)');
-%title(['Measured and Extrapolated/Interpolated/Resampled ',...
-%       'Amplitude Response']);
-
 Ns = length(Gdbfk); if Ns~=Nfft/2+1, error("confusion"); end
 Sdb = [Gdbfk,Gdbfk(Ns-1:-1:2)]; % install negative-frequencies
 
@@ -56,10 +48,6 @@ disp(sprintf(['Time-limitedness check: Outer 20%% of impulse ' ...
 if tlerr>1.0 % arbitrarily set 1% as the upper limit allowed
   error('Increase Nfft and/or smooth Sdb');
 end
-
-%figure(2);
-%plot(s, '-k'); grid('on');   title('Impulse Response');
-%xlabel('Time (samples)');   ylabel('Amplitude');
 
 c = ifft(Sdb); % compute real cepstrum from log magnitude spectrum
 % Check aliasing of cepstrum (in theory there is always some):
@@ -80,8 +68,8 @@ Smp = 10 .^ (Cf/20); % minimum-phase spectrum
 Smpp = Smp(1:Ns); % nonnegative-frequency portion
 wt = 1 ./ (fk+1); % typical weight fn for audio
 wk = 2*pi*fk/fs;
-%[B,A] = invfreqz(Smpp,wk,NZ,NP,wt);
-[B,A] = invfreqz(Smpp,wk,NZ,NP);
+[B,A] = invfreqz(Smpp,wk,NZ,NP,wt);
+%[B,A] = invfreqz(Smpp,wk,NZ,NP);
 
 [Hh, Fh] = freqz(B, A, Ns, 0, fmax * 2);
 
