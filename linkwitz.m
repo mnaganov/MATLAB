@@ -1,4 +1,4 @@
-data = csvread('/Users/mikhail/Sounds/linkwitz_3.csv', 1, 0);  % skip the header
+data = csvread('/Users/mikhail/Sounds/linkwitz_2.csv', 1, 0);  % skip the header
 log_freqs = data(:, 1);
 start_fq = log_freqs(1);
 end_fq = log_freqs(end);
