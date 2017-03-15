@@ -1,12 +1,12 @@
-%data = csvread('/Users/mikhail/Documents/MATLAB/linkwitz_2.csv', 1, 0);  % skip the header
-data = csvread('/Users/mikhail/Documents/MATLAB/Phonitor-Med-30-1.2-FR-Right-1_1.csv', 1, 0);  % skip the header
+%data = csvread('/usr/local/google/home/mnaganov/Documents/MATLAB/linkwitz_2.csv', 1, 0);  % skip the header
+data = csvread('/usr/local/google/home/mnaganov/Documents/MATLAB/Phonitor-Med-30-1.2-FR-Right-1_1.csv', 1, 0);  % skip the header
 f = data(:, 1).';
 fmin = f(1);
 fmax = f(end);
 NG = length(f);
 Gdb_nonnorm = data(:, 2).';
 %Gdb = Gdb_nonnorm .+ (-max(Gdb_nonnorm));
-Gdb = Gdb_nonnorm .+ (-Gdb_nonnorm(1));
+Gdb = Gdb_nonnorm + (-Gdb_nonnorm(1));
 Gphase = data(:, 3).';
 fs = 44100;
 NP = 9;
@@ -35,7 +35,7 @@ Gdbei = spline(fe,Gdbe); % say `help spline'
 fk = fs*[0:Nfft/2]/Nfft; % fft frequency grid (nonneg freqs)
 Gdbfk = ppval(Gdbei,fk); % Uniformly resampled amp-resp
 
-Ns = length(Gdbfk); if Ns~=Nfft/2+1, error("confusion"); end
+Ns = length(Gdbfk); if Ns~=Nfft/2+1, error('confusion'); end
 Sdb = [Gdbfk,Gdbfk(Ns-1:-1:2)]; % install negative-frequencies
 
 S = 10 .^ (Sdb/20); % convert to linear magnitude
@@ -71,7 +71,7 @@ wk = 2*pi*fk/fs;
 [B,A] = invfreqz(Smpp,wk,NZ,NP,wt);
 %[B,A] = invfreqz(Smpp,wk,NZ,NP);
 
-[Hh, Fh] = freqz(B, A, Ns, 0, fmax * 2);
+[Hh, Fh] = freqz(B, A, Ns, fmax * 2);
 
 subplot(2, 1, 1);
 semilogx(Fh, 20 * log10(abs(Hh)), 'b', f, Gdb, 'r');
