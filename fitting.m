@@ -1,17 +1,17 @@
-%data = csvread('/usr/local/google/home/mnaganov/Documents/MATLAB/linkwitz_2.csv', 1, 0);  % skip the header
-data = csvread('/usr/local/google/home/mnaganov/Documents/MATLAB/Phonitor-Med-30-1.2-FR-Right-1_1.csv', 1, 0);  % skip the header
+%data = csvread('/Users/mikhail/Documents/MATLAB/linkwitz_2.csv', 1, 0);  % skip the header
+data = csvread('/Users/mikhail/Documents/MATLAB/Phonitor-Med-30-1.2-FR-Right-1_1.csv', 1, 0);  % skip the header
 f = data(:, 1).';
 fmin = f(1);
 fmax = f(end);
 NG = length(f);
-Gdb_nonnorm = data(:, 2).';
+Gdb = data(:, 2).';
 %Gdb = Gdb_nonnorm .+ (-max(Gdb_nonnorm));
-Gdb = Gdb_nonnorm + (-Gdb_nonnorm(1));
+%Gdb = Gdb_nonnorm + (-Gdb_nonnorm(1));
 Gphase = data(:, 3).';
 fs = 44100;
 NP = 9;
 NZ = 9;
-Nfft = 8192;
+Nfft = 512;
 
 % Must decide on a dc value.
 % Either use what is known to be true or pick something "maximally
@@ -25,7 +25,7 @@ dc_amp = Gdb(1) - f(1)*(Gdb(2)-Gdb(1))/(f(2)-f(1));
 Gdb_last_slope = (Gdb(NG) - Gdb(NG-1)) / (f(NG) - f(NG-1));
 nyq_amp = Gdb(NG) + Gdb_last_slope * (fs/2 - f(NG));
 
-Gdbe = [dc_amp, Gdb, nyq_amp]; 
+Gdbe = [dc_amp, Gdb, nyq_amp] + (-dc_amp); 
 fe = [0,f,fs/2];
 NGe = NG+2;
 
@@ -74,11 +74,13 @@ wk = 2*pi*fk/fs;
 [Hh, Fh] = freqz(B, A, Ns, fmax * 2);
 
 subplot(2, 1, 1);
-semilogx(Fh, 20 * log10(abs(Hh)), 'b', f, Gdb, 'r');
+Fh(1) = Fh(1) + 0.0001;
+fk(1) = fk(1) + 0.0001;
+semilogx(Fh, 20 * log10(abs(Hh)), 'b', f, Gdbe(2:end-1), 'r', fk, Gdbfk, 'g');
 grid on;
-xlim([fmin, fmax]);
+xlim([20, fs/2]);
 
 subplot(2, 1, 2);
 semilogx(Fh, angle(Hh) .* (180 / pi), 'b', f, Gphase, 'r');
 grid on;
-xlim([fmin, fmax]);
+xlim([20, fs/2]);
