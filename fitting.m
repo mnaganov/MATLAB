@@ -9,9 +9,9 @@ Gdb = data(:, 2).';
 %Gdb = Gdb_nonnorm + (-Gdb_nonnorm(1));
 Gphase = data(:, 3).';
 fs = 44100;
-NP = 9;
-NZ = 9;
-Nfft = 512;
+NP = 8;
+NZ = 8;
+Nfft = 2048;
 
 % Must decide on a dc value.
 % Either use what is known to be true or pick something "maximally
@@ -71,12 +71,14 @@ wk = 2*pi*fk/fs;
 [B,A] = invfreqz(Smpp,wk,NZ,NP,wt);
 %[B,A] = invfreqz(Smpp,wk,NZ,NP);
 
-[Hh, Fh] = freqz(B, A, Ns, fmax * 2);
+[Hh, Fh] = freqz(B, A, Nfft, fs);
 
 subplot(2, 1, 1);
 Fh(1) = Fh(1) + 0.0001;
+fe(1) = fe(1) + 0.0001;
 fk(1) = fk(1) + 0.0001;
-semilogx(Fh, 20 * log10(abs(Hh)), 'b', f, Gdbe(2:end-1), 'r', fk, Gdbfk, 'g');
+%semilogx(Fh, 20 * log10(abs(Hh)), 'b', fe, Gdbe, 'r', fk, Gdbfk, 'g');
+semilogx(Fh, 20 * log10(abs(Hh)), 'b', fe, Gdbe, 'r', fk, 20 * log10(abs(Smpp)), 'g');
 grid on;
 xlim([20, fs/2]);
 
