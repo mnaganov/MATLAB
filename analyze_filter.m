@@ -43,5 +43,5 @@ function [freq_resp, phase_resp, gd] = analyze_channel (start_pos, end_pos, fft_
   end;
 
   gd = -diff(sm_phase_resp) / (fft_bin * 2 * pi);
-  gd = gd(start_pos:end_pos - 1);
+  gd = gd(start_pos:end_pos - 1) * 1000000;
 endfunction
