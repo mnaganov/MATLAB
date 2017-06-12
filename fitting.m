@@ -5,8 +5,6 @@ fmin = f(1);
 fmax = f(end);
 NG = length(f);
 Gdb = data(:, 2).';
-%Gdb = Gdb_nonnorm .+ (-max(Gdb_nonnorm));
-%Gdb = Gdb_nonnorm + (-Gdb_nonnorm(1));
 Gphase = data(:, 3).';
 fs = 44100;
 NP = 8;
@@ -25,7 +23,7 @@ dc_amp = Gdb(1) - f(1)*(Gdb(2)-Gdb(1))/(f(2)-f(1));
 Gdb_last_slope = (Gdb(NG) - Gdb(NG-1)) / (f(NG) - f(NG-1));
 nyq_amp = Gdb(NG) + Gdb_last_slope * (fs/2 - f(NG));
 
-Gdbe = [dc_amp, Gdb, nyq_amp] + (-dc_amp); 
+Gdbe = [dc_amp, Gdb, nyq_amp] + (-dc_amp);
 fe = [0,f,fs/2];
 NGe = NG+2;
 

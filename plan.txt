@@ -1,9 +1,11 @@
 analyze_filter: stimulus wave, response wave L, response wave R -> FR L+R, GD L+R
+filter_from_wav_files: stimulus wave, response wave L, response wave R -> log, deg FR L+R, GD L+R
 plot_filter: plot from FR L+R, GD L+R
 plot_filter_from_log_csv_file: plot from log, deg csv of FR L+R
 plot_filter_from_two_log_csv_files: plot from log, deg csv of FR L, csv of FR R
 plot_filter_from_wav_files: plot from stimulus wave, response wave L, response wave R
-transform_log_data: logarithmic, deg FR -> FR L+R, GD L+R
+plot_filter_vs: plot 2 filters from FR L+R, GD L+R
+transform_log_data: log, deg FR -> FR L+R, GD L+R
 
 fitting: experimental application of invfreqz
 
