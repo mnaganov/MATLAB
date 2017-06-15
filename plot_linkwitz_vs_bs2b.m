@@ -4,9 +4,9 @@ filter_from_log_csv_file('/Users/mikhail/Documents/MATLAB/linkwitz_2.csv', 1);
 [bs2b_freqs, bs2b_start_fq, bs2b_end_fq, bs2b_l_freq_resp_db, bs2b_l_phase_resp_deg, bs2b_l_gd_us, bs2b_r_freq_resp_db, bs2b_r_phase_resp_deg, bs2b_r_gd_us] = ...
 filter_from_wav_files(
     20, 20000,
-    '/Users/mikhail/Sounds/MeasSweep_44100_20_20000_L-Mono.wav',
-    '/Users/mikhail/Sounds/bs2b-MeasSweep_44100_20_20000_L-Left.wav',
-    '/Users/mikhail/Sounds/bs2b-MeasSweep_44100_20_20000_L-Right.wav',
+    '/Users/mikhail/Sounds/LogSweep_44100_20_20000.wav',
+    '/Users/mikhail/Sounds/lggu-bs2b-LogSweep-LeftCh-Left.wav',
+    '/Users/mikhail/Sounds/lggu-bs2b-LogSweep-LeftCh-Right.wav',
     200);
 
 plot_filter_vs(
