@@ -1,14 +1,27 @@
-function [freqs, l_freq_resp, l_phase_resp, l_gd, r_freq_resp, r_phase_resp, r_gd] = analyze_filter (start_fq, end_fq, stim_file, l_resp_file, r_resp_file, gd_smoothing)
-  [stim_wave, s_rate] = audioread(stim_file);
-  [l_resp_wave, l_resp_sr] = audioread(l_resp_file);
-  [r_resp_wave, r_resp_sr] = audioread(r_resp_file);
+function [freqs, l_freq_resp, l_phase_resp, l_gd, r_freq_resp, r_phase_resp, r_gd] = analyze_filter (start_fq, end_fq, stim_file, resp_file, gd_smoothing)
+  [stim_wave_lr, s_rate] = audioread(stim_file);
+  [resp_wave_lr, resp_sr] = audioread(resp_file);
 
-  if (s_rate != l_resp_sr)
-    error("stimulus file sampling rate %d != left response sampling rate %d", s_rate, l_resp_sr);
+  if (s_rate != resp_sr)
+    error("stimulus file sampling rate %d != response sampling rate %d", s_rate, resp_sr);
   endif
-  if (s_rate != r_resp_sr)
-    error("stimulus file sampling rate %d != right response sampling rate %d", s_rate, r_resp_sr);
+  if (length(stim_wave_lr) != length(resp_wave_lr))
+    error("stimulus file length %d != response length %d", length(stim_wave_lr), length(resp_wave_lr));
   endif
+
+  if (columns(stim_wave_lr) == 1)
+    stim_wave = stim_wave_lr;
+  elseif (columns(stim_wave_lr) == 2)
+    % Left channel is used from the stimulus file
+    stim_wave = stim_wave_lr(:, 1);
+  else
+    error("stimulus file has unsupported number of channels %d", columns(stim_wave_lr));
+  endif
+  if (columns(resp_wave_lr) != 2)
+    error("response file must be stereo");
+  endif
+  l_resp_wave = resp_wave_lr(:, 1);
+  r_resp_wave = resp_wave_lr(:, 2);
 
   l = length(stim_wave);
   l2 = round(l / 2);

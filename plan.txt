@@ -11,7 +11,6 @@ transform_log_data: log freqs, db, deg FR L+R -> db, deg FR L+R, GD L+R
 fitting: experimental application of invfreqz
 
 TODO:
-Instead of Left Wav + Right Wav just use stereo
 Move sound files close to .m
 fit_filter: db, deg FR -> B, A coeff of TF L+R
 freqz_and_gd: B, A coeff of TF L+R -> FR L+R, GD L+R
