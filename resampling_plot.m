@@ -1,5 +1,5 @@
-[wave_44k, sr_44k] = audioread('/Users/mikhail/Sounds/Mono Sine 11025 45deg -6 dB 44-1.wav');
-[wave_48k, sr_48k] = audioread('/Users/mikhail/Sounds/Mono Sine 11025 45deg -6 dB 48.wav');
+[wave_44k, sr_44k] = audioread(sound_data_dir('Mono Sine 11025 45deg -6 dB 44-1.wav'));
+[wave_48k, sr_48k] = audioread(sound_data_dir('Mono Sine 11025 45deg -6 dB 48.wav'));
 N = 10;
 frames_44 = 0:1:N;
 frames_48 = 0:441/480:N;
