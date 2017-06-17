@@ -1,9 +1,13 @@
-function [freqs, start_fq, end_fq, l_freq_resp_db, l_phase_resp_deg, l_gd_us, r_freq_resp_db, r_phase_resp_deg, r_gd_us] = filter_from_wav_files (start_fq, end_fq, stim_file, resp_file, gd_smoothing)
-  [freqs, l_freq_resp, l_phase_resp, l_gd_us, r_freq_resp, r_phase_resp, r_gd_us] = analyze_filter(start_fq, end_fq, stim_file, resp_file, gd_smoothing);
-  l_freq_resp_db = to_db(l_freq_resp);
-  l_phase_resp_deg = to_deg(l_phase_resp);
-  r_freq_resp_db = to_db(r_freq_resp);
-  r_phase_resp_deg = to_deg(r_phase_resp);
+function [freqs, start_fq, end_fq, fq_resp_plot] = filter_from_wav_files (start_fq, end_fq, stim_file, resp_file, gd_smoothing)
+  [freqs, fq_resp] = analyze_filter(start_fq, end_fq, stim_file, resp_file, gd_smoothing);
+  fq_resp_plot.l = channel_for_plot(fq_resp.l);
+  fq_resp_plot.r = channel_for_plot(fq_resp.r);
+endfunction
+
+function chan_fq_resp_plot = channel_for_plot (chan_fq_resp)
+  chan_fq_resp_plot.am_db = to_db(chan_fq_resp.am);
+  chan_fq_resp_plot.ph_deg = to_deg(chan_fq_resp.ph);
+  chan_fq_resp_plot.gd_us = to_us(chan_fq_resp.gd);
 endfunction
 
 function in_db = to_db (ampls)
@@ -12,4 +16,8 @@ endfunction
 
 function in_deg = to_deg (rads)
   in_deg = rads .* (180 / pi);
+endfunction
+
+function in_us = to_us (sec)
+  in_us = sec * 1000000;
 endfunction
