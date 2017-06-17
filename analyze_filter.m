@@ -1,4 +1,4 @@
-function [freqs, fq_resp] = analyze_filter (start_fq, end_fq, stim_file, resp_file, gd_smoothing)
+function [freqs, fq_resp] = analyze_filter (fq_lim, stim_file, resp_file, gd_smoothing)
   [stim_wave_lr, s_rate] = audioread(stim_file);
   [resp_wave_lr, resp_sr] = audioread(resp_file);
 
@@ -29,13 +29,13 @@ function [freqs, fq_resp] = analyze_filter (start_fq, end_fq, stim_file, resp_fi
 
   % We need to use the first l/2 bins that correspond to frequencies from 0 to s_rate / 2
   all_freqs = (0:l2 - 1)' * fft_bin;
-  start_pos = find(all_freqs >= start_fq, 1);
-  end_pos = find(all_freqs >= end_fq, 1);
+  start_pos = find(all_freqs >= fq_lim(1), 1);
+  end_pos = find(all_freqs >= fq_lim(2), 1);
   if (length(start_pos) == 0)
-    error("start frequency %d is outside of possible frequences", start_fq);
+    error("start frequency %d is outside of possible frequences", fq_lim(1));
   endif
   if (length(end_pos) == 0)
-    error("end frequency %d is outside of possible frequences", end_fq);
+    error("end frequency %d is outside of possible frequences", fq_lim(2));
   endif
   freqs = all_freqs(start_pos:end_pos);
 

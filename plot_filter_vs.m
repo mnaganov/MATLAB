@@ -1,4 +1,4 @@
-function plot_filter_vs (start_fq, end_fq, name1, freqs1, fq_resp1, name2, freqs2, fq_resp2, gd_scale_us)
+function plot_filter_vs (fq_lim, name1, freqs1, fq_resp1, name2, freqs2, fq_resp2, gd_scale_us)
   figure;
 
   attn1 = fq_resp1.l.am_db(1);
@@ -13,7 +13,7 @@ function plot_filter_vs (start_fq, end_fq, name1, freqs1, fq_resp1, name2, freqs
            freqs2, fq_resp2.l.am_db, 'c', freqs2, fq_resp2.r.am_db, 'm');
   grid on;
   ylabel('dB');
-  xlim([start_fq, end_fq]);
+  xlim(fq_lim);
   title(['Comparison of AR for filter ' name1 ' direct (blue), opposite (red)' ...
        ' vs. ' name2 ' direct (cyan), opposite (magenta)']);
 
@@ -22,7 +22,7 @@ function plot_filter_vs (start_fq, end_fq, name1, freqs1, fq_resp1, name2, freqs
            freqs2, fq_resp2.l.ph_deg, 'c', freqs2, fq_resp2.r.ph_deg, 'm');
   grid on;
   ylabel('deg');
-  xlim([start_fq, end_fq]);
+  xlim(fq_lim);
   title(['Comparison of PR for filter ' name1 ' direct (blue), opposite (red)' ...
        ' vs. ' name2 ' direct (cyan), opposite (magenta)']);
 
@@ -31,7 +31,7 @@ function plot_filter_vs (start_fq, end_fq, name1, freqs1, fq_resp1, name2, freqs
            freqs2(2:end), fq_resp2.l.gd_us, 'c', freqs2(2:end), fq_resp2.r.gd_us, 'm');
   grid on;
   ylabel('{\mu}s');
-  xlim([start_fq, end_fq]);
+  xlim(fq_lim);
   if length(gd_scale_us) == 2
     ylim(gd_scale_us);
   endif

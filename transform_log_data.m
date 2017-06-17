@@ -1,7 +1,6 @@
-function [freqs, start_fq, end_fq, fq_resp_plot] = transform_log_data (log_l_freqs, log_l_freq_resp_db, log_l_phase_resp_deg, log_r_freqs, log_r_freq_resp_db, log_r_phase_resp_deg)
-  start_fq = log_l_freqs(1);
-  end_fq = log_l_freqs(end);
-  freqs = start_fq:1:end_fq;
+function [freqs, fq_lim, fq_resp_plot] = transform_log_data (log_l_freqs, log_l_freq_resp_db, log_l_phase_resp_deg, log_r_freqs, log_r_freq_resp_db, log_r_phase_resp_deg)
+  fq_lim = [log_l_freqs(1), log_l_freqs(end)];
+  freqs = fq_lim(1):1:fq_lim(2);
   fq_resp_plot.l = prepare_channel(freqs, log_l_freqs, log_l_freq_resp_db, log_l_phase_resp_deg);
   fq_resp_plot.r = prepare_channel(freqs, log_r_freqs, log_r_freq_resp_db, log_r_phase_resp_deg);
 endfunction
