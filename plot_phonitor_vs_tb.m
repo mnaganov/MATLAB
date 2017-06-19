@@ -1,4 +1,4 @@
-[phn_freqs, phn_fq_lim, phn_fq_resp] = filter_from_two_log_csv_files(
+[phn_freqs, _, phn_fq_resp] = filter_from_two_log_csv_files(
     sound_data_dir('Phonitor-Med-30-1.2-FR-Left-1_1.csv'),
     sound_data_dir('Phonitor-Med-30-1.2-FR-Right-1_1.csv'));
 
