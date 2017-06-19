@@ -26,18 +26,8 @@ function [freqs, fq_resp] = analyze_filter (fq_lim, stim_file, resp_file, gd_smo
   l = length(stim_wave);
   l2 = round(l / 2);
   fft_bin = s_rate / l;
-
   % We need to use the first l/2 bins that correspond to frequencies from 0 to s_rate / 2
-  all_freqs = (0:l2 - 1)' * fft_bin;
-  start_pos = find(all_freqs >= fq_lim(1), 1);
-  end_pos = find(all_freqs >= fq_lim(2), 1);
-  if (length(start_pos) == 0)
-    error("start frequency %d is outside of possible frequences", fq_lim(1));
-  endif
-  if (length(end_pos) == 0)
-    error("end frequency %d is outside of possible frequences", fq_lim(2));
-  endif
-  freqs = all_freqs(start_pos:end_pos);
+  [freqs, start_pos, end_pos] = limit_freqs((0:l2 - 1)' * fft_bin, fq_lim);
 
   fft_stim_wave = fft(stim_wave);
   fq_resp.l = analyze_channel(start_pos, end_pos, fft_bin, fft_stim_wave, l_resp_wave, gd_smoothing);
