@@ -1,5 +1,5 @@
 %data = csvread(sound_data_dir('linkwitz_2.csv'), 1, 0);  % skip the header
-data = csvread(sound_data_dir('Phonitor-Med-30-1.2-FR-Right-1_1.csv'), 1, 0);  % skip the header
+data = csvread(sound_data_dir('Phonitor-Med-30-1.2-FR-Right-1_3.csv'), 1, 0);  % skip the header
 f = data(:, 1).';
 fmin = f(1);
 fmax = f(end);
