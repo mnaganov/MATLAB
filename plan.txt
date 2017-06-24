@@ -11,5 +11,4 @@ transform_log_data: log freqs, db, deg FR L+R -> db, deg FR L+R, GD L+R
 fitting: experimental application of invfreqz
 
 TODO:
-fit_filter: db, deg FR -> B, A coeff of TF L+R
 fast smoothing

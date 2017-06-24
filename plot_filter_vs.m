@@ -32,7 +32,7 @@ function plot_filter_vs (fq_lim, name1, freqs1, fq_resp1, name2, freqs2, fq_resp
   grid on;
   ylabel('{\mu}s');
   xlim(fq_lim);
-  if length(gd_scale_us) == 2
+  if (nargin == 8 && length(gd_scale_us) == 2)
     ylim(gd_scale_us);
   endif
   title(['Comparison of GD for filter ' name1 ' direct (blue), opposite (red)' ...
