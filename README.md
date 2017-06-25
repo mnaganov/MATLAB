@@ -10,7 +10,7 @@
   * **plot_filter**: plot from FR, GD
   * **plot_filter_from_log_csv_file**: plot from db, deg csv of FR
   * **plot_filter_from_tf**: plot from transfer function
-  * **plot_filter_from_two_log_csv_files: plot from db, deg csv of FR L, csv of FR R
+  * **plot_filter_from_two_log_csv_files**: plot from db, deg csv of FR L, csv of FR R
   * **plot_filter_from_wav_files**: plot from stimulus wave, response wave L, response wave R
   * **plot_filter_vs**: plot 2 filters from db, deg FR, GD
   * **tf_from_two_log_csv_files**: db, deg csv of FR L, csv of FR R -> transfer function
