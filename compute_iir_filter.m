@@ -16,12 +16,12 @@ function [B, A] = compute_iir_filter (freqs, am_db, n_fft, fs, n_poles, n_zeroes
 
   fs_am_db = [uniform_am_db, uniform_am_db(uniform_len - 1:-1:2)];
   % Verify that the source frequency response if smooth enough
-  if (compute_error(real(ifft(from_db(fs_am_db))), uniform_len) > 1.0)
+  if (compute_error(real(ifft(from_db(fs_am_db))), uniform_len, 'impulse') > 1.0)
     error("insufficient n_fft, or non-smooth target response");
   endif
 
   cepst = ifft(fs_am_db);
-  if (compute_error(cepst, uniform_len) > 1.0)
+  if (compute_error(cepst, uniform_len, 'cepstrum') > 1.0)
     error("insufficient n_fft, or non-smooth target response");
   endif
   cepst_folded = [cepst(1), cepst(2:uniform_len - 1) + cepst(n_fft:-1:uniform_len + 1), ...
@@ -37,6 +37,7 @@ function in_ampls = from_db (db)
   in_ampls = 10 .^ (db / 20);
 endfunction
 
-function err = compute_error(resp, len)
+function err = compute_error(resp, len, name)
   err = 100 * norm(resp(round(0.9 * len:1.1 * len))) / norm(resp);
+  disp(sprintf(['Outer 20%% of %s holds %0.2f'], name, err));
 endfunction

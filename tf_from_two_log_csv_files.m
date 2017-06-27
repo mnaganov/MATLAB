@@ -1,4 +1,4 @@
-function [tf, n_fft, fs] = tf_from_two_log_csv_files(l_csv_file, r_csv_file, n_fft, fs, n_poles, n_zeroes)
+function [tf, n_fft, fs] = tf_from_two_log_csv_files (l_csv_file, r_csv_file, n_fft, fs, n_poles, n_zeroes)
   l_data = csvread(l_csv_file, 1, 0);  % skip the header
   r_data = csvread(r_csv_file, 1, 0);  % skip the header
 
