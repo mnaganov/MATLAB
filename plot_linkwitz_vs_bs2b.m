@@ -5,7 +5,7 @@
     [20, 20000],
     sound_data_dir('logsweep_20Hz_20000Hz_-6dBFS_5s-LeftCh.wav'),
     sound_data_dir('lggu-bs2b-logsweep_20Hz_20000Hz_-6dBFS_5s-LeftCh.wav'),
-    200);
+    20);
 
 plot_filter_vs(
     bs2b_fq_lim,

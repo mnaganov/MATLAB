@@ -41,9 +41,12 @@ function chan_fq_resp = analyze_channel (start_pos, end_pos, fft_bin, fft_stim_w
   chan_fq_resp.ph = angle(fft_filter(start_pos:end_pos));
 
   sm_phase_resp = unwrap(angle(fft_filter));
+  order = 100;
+  sm_coeff = bincoeff(order, 0:order);
+  sm_coeff_sum = sum(sm_coeff);
   for i = 1:gd_smoothing
-    sm_phase_resp = conv(sm_phase_resp, [1, 2, 1] / 4, 'same');
-  end;
+    sm_phase_resp = conv(sm_phase_resp, sm_coeff ./ sm_coeff_sum, 'same');
+  end
 
   gd = -diff(sm_phase_resp) / (fft_bin * 2 * pi);
   chan_fq_resp.gd = gd(start_pos:end_pos - 1);
