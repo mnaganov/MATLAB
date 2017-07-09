@@ -1,4 +1,4 @@
-function [freqs, fq_resp] = analyze_filter (fq_lim, stim_file, resp_file, gd_smoothing)
+function [frqs, fq_resp] = analyze_filter (fq_lim, stim_file, resp_file, gd_smoothing)
   [stim_wave_lr, s_rate] = audioread(stim_file);
   [resp_wave_lr, resp_sr] = audioread(resp_file);
 
@@ -27,7 +27,7 @@ function [freqs, fq_resp] = analyze_filter (fq_lim, stim_file, resp_file, gd_smo
   l2 = round(l / 2);
   fft_bin = s_rate / l;
   % We need to use the first l/2 bins that correspond to frequencies from 0 to s_rate / 2
-  [freqs, start_pos, end_pos] = limit_freqs((0:l2 - 1)' * fft_bin, fq_lim);
+  [frqs, start_pos, end_pos] = limit_freqs((0:l2 - 1)' * fft_bin, fq_lim);
 
   fft_stim_wave = fft(stim_wave);
   fq_resp.l = analyze_channel(start_pos, end_pos, fft_bin, fft_stim_wave, l_resp_wave, gd_smoothing);

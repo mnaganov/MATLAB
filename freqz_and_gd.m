@@ -1,11 +1,11 @@
-function [freqs, fq_resp] = freqz_and_gd (fq_lim, tf, n_fft, fs)
-  [fq_resp.l, freqs] = channel_freqz_and_gd(fq_lim, tf.l.B, tf.l.A, n_fft, fs);
+function [frqs, fq_resp] = freqz_and_gd (fq_lim, tf, n_fft, fs)
+  [fq_resp.l, frqs] = channel_freqz_and_gd(fq_lim, tf.l.B, tf.l.A, n_fft, fs);
   [fq_resp.r, _] = channel_freqz_and_gd(fq_lim, tf.r.B, tf.r.A, n_fft, fs);
 endfunction
 
-function [chan_fq_resp, freqs] = channel_freqz_and_gd(fq_lim, B, A, n_fft, fs)
-  [H, all_freqs] = freqz(B, A, n_fft, fs);
-  [freqs, start_pos, end_pos] = limit_freqs(all_freqs, fq_lim);
+function [chan_fq_resp, frqs] = channel_freqz_and_gd(fq_lim, B, A, n_fft, fs)
+  [H, all_frqs] = freqz(B, A, n_fft, fs);
+  [frqs, start_pos, end_pos] = limit_freqs(all_frqs, fq_lim);
   chan_fq_resp.am = abs(H(start_pos:end_pos));
   chan_fq_resp.ph = angle(H(start_pos:end_pos));
 

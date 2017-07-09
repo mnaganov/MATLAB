@@ -30,7 +30,7 @@ NGe = NG+2;
 % Resample to a uniform frequency grid, as required by ifft.
 % We do this by fitting cubic splines evaluated on the fft grid:
 Gdbei = spline(fe,Gdbe); % say `help spline'
-fk = fs*[0:Nfft/2]/Nfft; % fft frequency grid (nonneg freqs)
+fk = fs*[0:Nfft/2]/Nfft; % fft frequency grid (nonneg frqs)
 Gdbfk = ppval(Gdbei,fk); % Uniformly resampled amp-resp
 
 Ns = length(Gdbfk); if Ns~=Nfft/2+1, error('confusion'); end
