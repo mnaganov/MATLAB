@@ -14,7 +14,7 @@ function apply_binaural_filter (stim_file, tf, fs, resp_file)
                     filter(tf.r.B, tf.r.A, stim_wave_lr(:, 2)) .* opposite_attn;
   resp_wave(:, 2) = filter(tf.l.B, tf.l.A, stim_wave_lr(:, 2)) + ...
                     filter(tf.r.B, tf.r.A, stim_wave_lr(:, 1)) .* opposite_attn;
-  audiowrite(resp_file, resp_wave, fs);
+  audiowrite(resp_file, resp_wave, fs, 'BitsPerSample', 32);
 endfunction
 
 function in_ampls = from_db (db)
