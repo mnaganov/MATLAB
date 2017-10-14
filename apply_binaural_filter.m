@@ -6,15 +6,26 @@ function apply_binaural_filter (stim_file, tf, fs, resp_file)
   if (s_rate != fs)
     error("stimulus file sampling rate %d != filter sampling rate %d", s_rate, fs);
   endif
+  stim_info = audioinfo(stim_file);
+  pre_attn = 1.0;
+  if (any(strcmp(fieldnames(tf), 'pre_am_attn_db')))
+    pre_attn = from_db(-tf.pre_am_attn_db);
+  endif
+  stim_wave_l = stim_wave_lr(:, 1) .* pre_attn;
+  stim_wave_r = stim_wave_lr(:, 2) .* pre_attn;
   opposite_attn = 1.0;
   if (any(strcmp(fieldnames(tf.r), 'am_attn_db')))
     opposite_attn = from_db(-tf.r.am_attn_db);
   endif
-  resp_wave(:, 1) = filter(tf.l.B, tf.l.A, stim_wave_lr(:, 1)) + ...
-                    filter(tf.r.B, tf.r.A, stim_wave_lr(:, 2)) .* opposite_attn;
-  resp_wave(:, 2) = filter(tf.l.B, tf.l.A, stim_wave_lr(:, 2)) + ...
-                    filter(tf.r.B, tf.r.A, stim_wave_lr(:, 1)) .* opposite_attn;
-  audiowrite(resp_file, resp_wave, fs, 'BitsPerSample', 32);
+  resp_wave(:, 1) = filter(tf.l.B, tf.l.A, stim_wave_l) + ...
+                    filter(tf.r.B, tf.r.A, stim_wave_r) .* opposite_attn;
+  resp_wave(:, 2) = filter(tf.l.B, tf.l.A, stim_wave_r) + ...
+                    filter(tf.r.B, tf.r.A, stim_wave_l) .* opposite_attn;
+  audiowrite(resp_file, resp_wave, fs, ...
+             'BitsPerSample', stim_info.BitsPerSample, ...
+             'Title', stim_info.Title, ...
+             'Artist', stim_info.Artist, ...
+             'Comment', 'Processed with binaural IIR filter');
 endfunction
 
 function in_ampls = from_db (db)
