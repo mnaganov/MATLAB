@@ -7,4 +7,4 @@ function [frqs, fq_resp] = freqz_and_gd_mono (fq_lim, tf, n_fft, fs)
   fft_bin = fs / n_fft;
   gd = -diff(unwrap(angle(H))) / (fft_bin * 2 * pi);
   fq_resp.gd = gd(start_pos:end_pos - 1);
-endfunction
+end

@@ -8,7 +8,7 @@ function fig = plot_filter (frqs, fq_lim, fq_resp, am_limits_db, gd_limits_us)
   xlim(fq_lim);
   if (nargin >= 4 && length(am_limits_db) == 2)
     ylim(am_limits_db);
-  endif
+  end
   title('Amplitude response of the filter for direct (blue) and opposite (red) channels');
 
   subplot(3, 1, 2);
@@ -25,6 +25,6 @@ function fig = plot_filter (frqs, fq_lim, fq_resp, am_limits_db, gd_limits_us)
   xlim(fq_lim);
   if (nargin == 5 && length(gd_limits_us) == 2)
     ylim(gd_limits_us);
-  endif
+  end
   title('Group delay of the filter for direct (blue) and opposite (red) channels');
-endfunction
+end

@@ -7,11 +7,11 @@ function [tf, n_fft, fs] = fir_tf_from_log_csv_file (csv_file, l_l_r_r, n_fft, f
     log_r_freq_resp_db = data(:, 3).';
   else % l_r_l_r
     log_r_freq_resp_db = data(:, 4).';
-  endif
+  end
 
   tf.l.B = compute_fir_filter(frqs, log_l_freq_resp_db, n_fft, fs, n_taps);
   tf.l.A = [];
   tf.r.B = compute_fir_filter(frqs, log_r_freq_resp_db, n_fft, fs, n_taps);
   tf.r.A = [];
   tf.r.am_attn_db = log_l_freq_resp_db(1) - log_r_freq_resp_db(1);
-endfunction
+end

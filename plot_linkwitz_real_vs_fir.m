@@ -1,6 +1,6 @@
 file = sound_data_dir('linkwitz_2.csv');
 
-[real_frqs, _, real_fq_resp] = filter_from_log_csv_file(file, 1);
+[real_frqs, ign_, real_fq_resp] = filter_from_log_csv_file(file, 1);
 
 [fir_tf, n_fft, fs] = fir_tf_from_log_csv_file(file, 1, 1024, 96000, 1024);
 [mdl_frqs, mdl_fq_lim, mdl_fq_resp] = filter_from_tf([20, 20000], fir_tf, n_fft, fs);

@@ -5,4 +5,4 @@ function sm = smoothen (x, order, repeats)
   for i = 1:repeats
     sm = conv(sm, sm_coeff ./ sm_coeff_sum, 'same');
   end
-endfunction
+end

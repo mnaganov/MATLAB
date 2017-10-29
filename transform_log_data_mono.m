@@ -6,4 +6,4 @@ function [frqs, fq_lim, chan_fq_resp] = transform_log_data_mono (log_frqs, log_f
   phase_resp = chan_fq_resp.ph_deg .* (pi / 180);
   gd = -diff(unwrap(phase_resp)) / (2 * pi * (frqs(2) - frqs(1)));
   chan_fq_resp.gd_us = gd * 1000000;
-endfunction
+end

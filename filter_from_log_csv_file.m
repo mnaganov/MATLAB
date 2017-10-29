@@ -7,6 +7,6 @@ function [frqs, fq_lim, fq_resp] = filter_from_log_csv_file (csv_file, l_l_r_r)
   else % l_r_l_r
     log_l_phase_resp_deg = data(:, 3);
     log_r_r_freq_resp_db = data(:, 4);
-  endif
+  end
   [frqs, fq_lim, fq_resp] = transform_log_data(data(:, 1), data(:, 2), log_l_phase_resp_deg, data(:, 1), log_r_r_freq_resp_db, data(:, 5));
-endfunction
+end

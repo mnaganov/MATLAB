@@ -34,7 +34,7 @@ function plot_filter_vs (fq_lim, name1, frqs1, fq_resp1, name2, frqs2, fq_resp2,
   xlim(fq_lim);
   if (nargin == 8 && length(gd_limits_us) == 2)
     ylim(gd_limits_us);
-  endif
+  end
   title(['Comparison of GD for filter ' name1 ' direct (blue), opposite (red)' ...
        ' vs. ' name2 ' direct (cyan), opposite (magenta)']);
-endfunction
+end
