@@ -1,6 +1,6 @@
 function [frqs, fq_resp] = freqz_and_gd (fq_lim, tf, n_fft, fs)
   [fq_resp.l, frqs] = channel_freqz_and_gd(fq_lim, tf.l.B, tf.l.A, n_fft, fs);
-  [fq_resp.r, ign_] = channel_freqz_and_gd(fq_lim, tf.r.B, tf.r.A, n_fft, fs);
+  [fq_resp.r, ~] = channel_freqz_and_gd(fq_lim, tf.r.B, tf.r.A, n_fft, fs);
 end
 
 function [chan_fq_resp, frqs] = channel_freqz_and_gd(fq_lim, B, A, n_fft, fs)
