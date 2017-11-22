@@ -1,4 +1,4 @@
-m_file = sound_data_dir('ph-iir/se650.csv');
+m_file = sound_data_dir('ph-iir/hd650.csv');
 
 [meas_frqs, ~, meas_fq_resp] = filter_from_log_csv_file_mono(m_file);
 
