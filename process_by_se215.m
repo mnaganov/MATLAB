@@ -1,7 +1,7 @@
 clear;
-load(sound_data_dir('ph-iir/srh1540.mat'));
+load(sound_data_dir('ph-iir/se215.mat'));
 
 apply_filter_mono( ...
     sound_data_dir('impulse-44-32-_6dB.wav'), ...
     mdl_tf, 44100, ...
-    sound_data_dir('ph-iir/srh1540-44-32-_6dB-IIR.wav'));
+    sound_data_dir('ph-iir/se215-44-32-_6dB-IIR.wav'));

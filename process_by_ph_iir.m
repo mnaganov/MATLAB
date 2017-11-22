@@ -1,3 +1,4 @@
+clear;
 load(sound_data_dir('ph-iir/m-30-1_2-left.m7.mat'));
 
 %process_entire_file_binaural_filter( ...

@@ -30,7 +30,7 @@ function [B, A] = compute_iir_filter (frqs, am_db, n_fft, fs, n_poles, n_zeroes)
   min_phase_spec_full = from_db(fft(cepst_folded));
   min_phase_spec = min_phase_spec_full(1:uniform_len);
   weights = 1 ./ (uniform_frqs + 1);
-  [B, A] = invfreqz(min_phase_spec, 2 * pi * uniform_frqs / fs, n_zeroes, n_poles, weights);
+  [B, A] = invfreqz(min_phase_spec, 2 * pi * uniform_frqs / fs, n_zeroes, n_poles, weights, 100);
 end
 
 function in_ampls = from_db (db)
