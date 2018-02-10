@@ -9,15 +9,17 @@ function [frqs, fq_resp] = analyze_filter (fq_lim, stim_file, resp_file, gd_smoo
     error("stimulus file length %d ~= response length %d", length(stim_wave_lr), length(resp_wave_lr));
   end
 
-  if (columns(stim_wave_lr) == 1)
+  [~, stim_channels] = size(stim_wave_lr);
+  if (stim_channels == 1)
     stim_wave = stim_wave_lr;
-  elseif (columns(stim_wave_lr) == 2)
+  elseif (stim_channels == 2)
     % Left channel is used from the stimulus file
     stim_wave = stim_wave_lr(:, 1);
   else
-    error("stimulus file has unsupported number of channels %d", columns(stim_wave_lr));
+    error("stimulus file has unsupported number of channels %d", stim_channels);
   end
-  if (columns(resp_wave_lr) ~= 2)
+  [~, resp_channels] = size(resp_wave_lr);
+  if (resp_channels ~= 2)
     error("response file must be stereo");
   end
   l_resp_wave = resp_wave_lr(:, 1);
