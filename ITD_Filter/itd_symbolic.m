@@ -3,25 +3,14 @@ in_Fs = 96000;
 in_N = 2^16;
 in_stopband = 2150;
 in_kneeband = 1400;
-in_gd = -140e-6;
+in_gd = 85e-6;
 
 fhz = [in_Fs/in_N 10 20 in_kneeband in_stopband];
-ramp_gd = -in_gd * (fhz(5) - fhz(3)) / fhz(3);
 
-ramp_w = @(x) -ramp_gd * x;
-gd_w = @(x) -in_gd * x;
+gd_w = @(x) -in_gd * x; % fhz(3)..fhz(4)
 syms x;
-r_gd_knee_f = abs(in_gd - ramp_gd) * (sin(pi*((x - fhz(2))/(fhz(3)-fhz(2)))-pi/2)+1)/2 - ramp_gd;
-r_gd_knee_w = int(r_gd_knee_f);
 gd_knee_f = -in_gd * (cos(pi*((x - fhz(4))/(fhz(5)-fhz(4)))) + 1)/2;
 gd_knee_w = int(gd_knee_f);
-% gd_f = piecewise(x <= fhz(1), ramp_gd, ...
-%     (x > fhz(1)) & (x < fhz(2)), ramp_gd, ...
-%     (x >= fhz(2)) & (x <= fhz(3)), abs(in_gd - ramp_gd) * (sin(pi*((x - fhz(2))/(fhz(3)-fhz(2)))-pi/2)+1)/2 + ramp_gd, ...
-%     (x > fhz(3)) & (x < fhz(4)), in_gd, ...
-%     (x >= fhz(4)) & (x <= fhz(5)), in_gd * (cos(pi*((x - fhz(4))/(fhz(5)-fhz(4)))) + 1)/2, ...
-%      x > fhz(5), 0);
-% w_f = int(gd_f);
 
 fnorm = fhz ./ in_Fs;
 bin_i = round(fnorm .* in_N);
@@ -33,17 +22,15 @@ offset_4 = w(bin_i(4));
 w(bin_i(3):bin_i(4)) = gd_w(linspace(fhz(3), fhz(4), bin_i(4)-bin_i(3)+1)) - ...
     gd_w(fhz(4)) + offset_4;
 offset_3 = w(bin_i(3));
-w(bin_i(2):bin_i(3)) = subs(r_gd_knee_w, x, linspace(fhz(2), fhz(3), bin_i(3)-bin_i(2)+1)) - ...
-    subs(r_gd_knee_w, x, fhz(3)) + offset_3;
-offset_2 = w(bin_i(2));
-w((bin_i(1)+1):bin_i(2)) = ramp_w(linspace(fhz(1), fhz(2), bin_i(2)-bin_i(1))) - ...
-    ramp_w(fhz(2)) + offset_2;
+pb_a = (offset_3 - in_gd * (fhz(3) - fhz(1))) / (fhz(3) - fhz(1)) .^ 2;
+pb_b = in_gd + 2 * pb_a * fhz(3);
+pb_c = offset_3 + fhz(3) * (pb_a * fhz(3) - pb_b);
+proj_w = @(x) -pb_a * x .^ 2 + pb_b * x + pb_c;
+w(bin_i(1):bin_i(3)) = proj_w(linspace(fhz(1), fhz(3), bin_i(3)-bin_i(1)+1));
 
 figure;
 grid on;
-% plot_freqs = linspace(0, in_stopband, fix((in_Fs / in_N) * in_stopband));
-% semilogx(plot_freqs, subs(w_f, x, plot_freqs));
-% n = 1:in_N/2;
+
 % n = 1:bin_i(5)+100;
 % plot(n, w(n));
 % hold on;
@@ -51,12 +38,29 @@ grid on;
 %     bin_i(3), w(bin_i(3)), 'x', bin_i(4), w(bin_i(4)), 'square');
 % hold off;
 
-pulsefft = exp(1i * 2 * pi * w);
-pulsefft(in_N/2+2:in_N) = conj(flip(pulsefft(2:in_N/2)));
-pulsefft(in_N/2+1) = 1;
-gd_res = -diff(unwrap(angle(pulsefft))) / ((in_Fs / in_N) * 2 * pi);
+pulse_fd = exp(1i * 2 * pi * w);
+pulse_fd(in_N/2+2:in_N) = conj(flip(pulse_fd(2:in_N/2)));
+pulse_fd(1) = 1;
+pulse_fd(in_N/2+1) = 1;
 freqs = linspace(0, in_Fs, in_N);
+gd_res = -diff(unwrap(angle(pulse_fd))) / ((in_Fs / in_N) * 2*pi);
 yyaxis left;
-semilogx(freqs, unwrap(angle(pulsefft)));
+%semilogx(freqs, unwrap(angle(pulse_fd)));
+plot(freqs, unwrap(angle(pulse_fd)));
 yyaxis right;
-semilogx(freqs, [gd_res(1) gd_res] * 1e6);
+%semilogx(freqs, [gd_res(1) gd_res] * 1e6);
+plot(freqs, [gd_res(1) gd_res] * 1e6);
+
+pulse_td = ifft(pulse_fd);
+[pmax, pidx] = max(pulse_td);
+lp_pulse_td = circshift(pulse_td, in_N/2-pidx+1);
+
+% pulse_fft = fft(pulse_td);
+% gd_res_fft = -diff(unwrap(angle(pulse_fft))) / ((in_Fs / in_N) * 2 * pi);
+% hold on;
+% semilogx(freqs, [gd_res_fft(1) gd_res_fft] * 1e6);
+% hold off;
+
+filename = sprintf('itd_%dus_%dHz_%dk_%d.wav', ...
+    fix(in_gd * 1e6), in_stopband, in_N / 1024, in_Fs / 1000);
+audiowrite(filename, lp_pulse_td, in_Fs, 'BitsPerSample', 64);
