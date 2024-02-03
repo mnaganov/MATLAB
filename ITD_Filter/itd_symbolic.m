@@ -10,11 +10,11 @@ lp_pulse_td1 = create_itd_filter(N, Fs, stopband, kneeband, gd1, wN);
 lp_pulse_td2 = create_itd_filter(N, Fs, stopband, kneeband, gd2, wN);
 filename = sprintf('itd_%dusL_%dusR_%dHz_%dk_%d.wav', ...
     fix(gd1 * 1e6), fix(gd2 * 1e6), stopband, wN / 1024, Fs / 1000);
-audiowrite(filename, [lp_pulse_td1(:), lp_pulse_td2(:)], Fs, 'BitsPerSample', 64);
+% audiowrite(filename, [lp_pulse_td1(:), lp_pulse_td2(:)], Fs, 'BitsPerSample', 64);
 
-% figure;
-% grid on;
-% plot_w_and_gd(N, Fs, lp_pulse_td1, 'log');
+figure;
+grid on;
+plot_w_and_gd(N, Fs, lp_pulse_td1, 'log');
 
 function lp_pulse_td = create_itd_filter(in_N, in_Fs, in_stopband, in_kneeband, in_gd, in_wN)
     bin_w = in_Fs / in_N;
@@ -59,7 +59,7 @@ function plot_w_and_gd(in_N, in_Fs, lp_pulse_td, xaxis)
     pad = zeros(1, ((in_N-plen)/2));
     p_td = [pad lp_pulse_td pad];
     [pmax, pidx] = max(p_td);
-    p_td = circshift(p_td, pidx);
+    p_td = circshift(p_td, -(pidx-1));
     %plot(p_td);
     p_w = unwrap(angle(fft(p_td)));
     gd_res = -diff(p_w) / (in_Fs / in_N * 2*pi);
