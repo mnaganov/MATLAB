@@ -61,20 +61,31 @@ function plot_w_and_gd(in_N, in_Fs, lp_pulse_td, xaxis)
     [pmax, pidx] = max(p_td);
     p_td = circshift(p_td, -(pidx-1));
     %plot(p_td);
-    p_w = unwrap(angle(fft(p_td)));
-    gd_res = -diff(p_w) / (in_Fs / in_N * 2*pi);
+    p_fd = fft(p_td);
+    p_am = 20*log10(abs(p_fd));
+    p_w = unwrap(angle(p_fd));
+    p_gd = -diff(p_w) / (in_Fs / in_N * 2*pi);
     yyaxis left;
+%     if xaxis == 'log'
+%         semilogx(freqs, p_am);
+%     else
+%         plot(freqs, p_am);
+%     end
+%     ylabel('dB');
+%     yyaxis right;
     if xaxis == 'log'
         semilogx(freqs, p_w);
     else
         plot(freqs, p_w);
     end
+    ylabel('rad');
     yyaxis right;
     if xaxis == 'log'
-        semilogx(freqs, [gd_res(1) gd_res] * 1e6);
+        semilogx(freqs, [p_gd(1) p_gd] * 1e6);
     else
-        plot(freqs, [gd_res(1) gd_res] * 1e6);
+        plot(freqs, [p_gd(1) p_gd] * 1e6);
     end
+    ylabel('{\mu}s');
 end
 
 % n = 1:bin_i(5)+100;
